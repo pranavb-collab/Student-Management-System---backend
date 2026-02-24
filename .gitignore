@@ -1,10 +1,16 @@
-# Nestjs specific
+# =========================
+# Build & Dependencies
+# =========================
 /dist
 /node_modules
 /build
 /tmp
+.temp
+.tmp
 
+# =========================
 # Logs
+# =========================
 logs
 *.log
 npm-debug.log*
@@ -13,12 +19,52 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
-# dotenv environment variable files
+# =========================
+# Environment Variables
+# =========================
 .env
+.env.local
 .env.development
+.env.development.local
 .env.test
+.env.test.local
 .env.production
+.env.production.local
 
-# temp directory
-.temp
-.tmp
+# =========================
+# OS Files
+# =========================
+.DS_Store
+
+# =========================
+# Testing
+# =========================
+/coverage
+/.nyc_output
+
+# =========================
+# IDEs & Editors
+# =========================
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# VS Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# =========================
+# Runtime Data
+# =========================
+pids
+*.pid
+*.seed
+*.pid.lock
+report.*.json
