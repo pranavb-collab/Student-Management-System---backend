@@ -1,52 +1,34 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Param,
-  Put,
-  Delete,
-  UseGuards,
-} from '@nestjs/common';
-import { TeachersService } from './teachers.service';
+import { Controller, Post, Body, Param, Get, Patch, Delete } from '@nestjs/common';
+import { TeacherService } from './teachers.service';
 import { CreateTeacherDto } from './dto/create-teacher.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
-import { JwtAuthGuard } from '../guards/jwt.guard';
-import { RolesGuard } from '../guards/roles.guard';
-import { Roles } from '../decorators/roles.decorator';
 
 @Controller('teachers')
-@UseGuards(JwtAuthGuard, RolesGuard)
-export class TeachersController {
-  constructor(private readonly service: TeachersService) {}
+export class TeacherController {
+  constructor(private readonly teacherService: TeacherService) {}
 
-  @Post()
-  @Roles('ADMIN')
-  create(@Body() dto: CreateTeacherDto) {
-    return this.service.create(dto);
+  @Post(':userId')
+  create(@Param('userId') userId: string, @Body() dto: CreateTeacherDto) {
+    return this.teacherService.create(userId, dto);
   }
 
   @Get()
-  @Roles('ADMIN')
   findAll() {
-    return this.service.findAll();
+    return this.teacherService.findAll();
   }
 
   @Get(':id')
-  @Roles('ADMIN', 'TEACHER')
   findOne(@Param('id') id: string) {
-    return this.service.findOne(id);
+    return this.teacherService.findOne(id);
   }
 
-  @Put(':id')
-  @Roles('ADMIN')
+  @Patch(':id')
   update(@Param('id') id: string, @Body() dto: UpdateTeacherDto) {
-    return this.service.update(id, dto);
+    return this.teacherService.update(id, dto);
   }
 
   @Delete(':id')
-  @Roles('ADMIN')
   remove(@Param('id') id: string) {
-    return this.service.remove(id);
+    return this.teacherService.remove(id);
   }
 }

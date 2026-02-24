@@ -4,24 +4,24 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { User, UserSchema } from '../users/schemas/user.schema';
-import { Teacher, TeacherSchema } from 'src/teachers/schemas/teacher.schema';
-import { Student, StudentSchema } from 'src/students/schemas/student.schema';
+import { Teacher, TeacherSchema } from '../teachers/schemas/teacher.schema';
+import { Student, StudentSchema } from '../students/schemas/student.schema';
+import { Class, ClassSchema } from '../class/schemas/class.schema';
 
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 
 @Module({
   imports: [
-    ConfigModule, // ✅ IMPORTANT
-
+    ConfigModule,
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
       { name: Teacher.name, schema: TeacherSchema },
       { name: Student.name, schema: StudentSchema },
+      { name: Class.name, schema: ClassSchema },
     ]),
-
     JwtModule.registerAsync({
-      imports: [ConfigModule], // ✅ ADD THIS
+      imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (config: ConfigService) => ({
         secret: config.get<string>('JWT_SECRET'),
@@ -29,9 +29,8 @@ import { AuthController } from './auth.controller';
       }),
     }),
   ],
-
-  controllers: [AuthController],  
-  providers: [AuthService],    
-  exports: [JwtModule, AuthService], 
+  controllers: [AuthController],
+  providers: [AuthService],
+  exports: [JwtModule, AuthService],
 })
 export class AuthModule {}

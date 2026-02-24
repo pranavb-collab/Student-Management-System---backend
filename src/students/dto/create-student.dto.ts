@@ -1,10 +1,21 @@
+import { IsNotEmpty, IsString, IsDateString } from 'class-validator';
+
 export class CreateStudentDto {
-  user!: string;
-  rollNumber!: string;
-  grade!: string;
-  section!: string;
+  @IsNotEmpty()
+  class!: string; // classId
+
+  @IsNotEmpty()
+  @IsDateString()
   dateOfBirth!: Date;
+
+  @IsNotEmpty()
+  @IsString()
   parentName!: string;
+
+  @IsNotEmpty()
+  @IsString()
   parentPhone!: string;
+
+  @IsString()
   address?: string;
 }
