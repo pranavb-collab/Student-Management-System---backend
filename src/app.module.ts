@@ -16,6 +16,9 @@ import { SubjectService } from './subject/subject.service';
 import { SubjectModule } from './subject/subject.module';
 import { EventsModule } from './events/events.module';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { MarksController } from './marks/marks.controller';
+import { MarksService } from './marks/marks.service';
+import { MarksModule } from './marks/marks.module';
 
 @Module({
   imports: [ConfigModule.forRoot({isGlobal:true}),
@@ -41,6 +44,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
    ClassModule,
    SubjectModule,
    EventsModule,
+   MarksModule,
   ],
   controllers: [AppController, TeacherController, StudentController, ClassController, SubjectController],
   providers: [AppService],
