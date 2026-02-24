@@ -26,15 +26,19 @@ import { MailerModule } from '@nestjs-modules/mailer';
         uri: configService.get<string>('MONGO_URI'),
       }),
     }),
-    MailerModule.forRoot({
-  transport: {
-    service: 'gmail',
-    auth: {
-      user: 'bhuvanathadaka19@gmail.com',
-      pass: 'uksj jbnq lkim isxd',
-    },
-  },
-}),
+ MailerModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        transport: {
+          service: 'gmail',
+          auth: {
+            user: configService.get<string>('MAIL_USER'),
+            pass: configService.get<string>('MAIL_PASS'),
+          },
+        },
+      }),
+    }),
    AuthModule,
    TeacherModule,
    StudentModule,
