@@ -8,6 +8,9 @@ import { TeachersController } from './teachers/teachers.controller';
 import { TeachersModule } from './teachers/teachers.module';
 import { StudentsModule } from './students/students.module';
 import { StudentsController } from './students/students.controller';
+import { EventsModule } from './events/events.module';
+import { MailerModule } from '@nestjs-modules/mailer';
+
 @Module({
   imports: [ConfigModule.forRoot({isGlobal:true}),
    MongooseModule.forRootAsync({
@@ -17,9 +20,19 @@ import { StudentsController } from './students/students.controller';
         uri: configService.get<string>('MONGO_URI'),
       }),
     }),
+    MailerModule.forRoot({
+  transport: {
+    service: 'gmail',
+    auth: {
+      user: 'bhuvanathadaka19@gmail.com',
+      pass: 'uksj jbnq lkim isxd',
+    },
+  },
+}),
    AuthModule,
    TeachersModule,
    StudentsModule,
+   EventsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -9,10 +9,12 @@ import { Student, StudentSchema } from 'src/students/schemas/student.schema';
 
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
+import { RolesGuard } from 'src/guards/roles.guard';
+import { JwtAuthGuard } from 'src/guards/jwt.guard';
 
 @Module({
   imports: [
-    ConfigModule, // ✅ IMPORTANT
+    ConfigModule,
 
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
@@ -21,7 +23,7 @@ import { AuthController } from './auth.controller';
     ]),
 
     JwtModule.registerAsync({
-      imports: [ConfigModule], // ✅ ADD THIS
+      imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (config: ConfigService) => ({
         secret: config.get<string>('JWT_SECRET'),
@@ -30,8 +32,19 @@ import { AuthController } from './auth.controller';
     }),
   ],
 
-  controllers: [AuthController],  
-  providers: [AuthService],    
-  exports: [JwtModule, AuthService], 
+  controllers: [AuthController],
+
+  providers: [
+    AuthService,
+    RolesGuard,     // ✅ ADD THIS
+    JwtAuthGuard,   // ✅ ADD THIS (if using custom guard)
+  ],
+
+  exports: [
+    JwtModule,
+    AuthService,
+    RolesGuard,
+    JwtAuthGuard,   // ✅ EXPORT IT ALSO
+  ],
 })
 export class AuthModule {}
