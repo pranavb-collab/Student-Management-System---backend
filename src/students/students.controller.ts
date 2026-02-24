@@ -1,60 +1,34 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Param,
-  Put,
-  Delete,
-  UseGuards,
-} from '@nestjs/common';
-import { StudentsService } from './students.service';
+import { Controller, Get, Post, Body, Param, Patch, Delete } from '@nestjs/common';
+import { StudentService } from './students.service';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
-import { JwtAuthGuard } from '../guards/jwt.guard';
-import { RolesGuard } from '../guards/roles.guard';
-import { Roles } from '../decorators/roles.decorator';
 
 @Controller('students')
-@UseGuards(JwtAuthGuard, RolesGuard)
-export class StudentsController {
-  constructor(private readonly studentsService: StudentsService) {}
+export class StudentController {
+  constructor(private readonly studentService: StudentService) {}
 
-  // ADMIN creates student
-  @Post()
-  @Roles('ADMIN')
-  create(@Body() dto: CreateStudentDto) {
-    return this.studentsService.create(dto);
+  @Post(':userId')
+  create(@Param('userId') userId: string, @Body() createStudentDto: CreateStudentDto) {
+    return this.studentService.create(userId, createStudentDto);
   }
 
-  // ADMIN view all students
   @Get()
-  @Roles('ADMIN')
   findAll() {
-    return this.studentsService.findAll();
+    return this.studentService.findAll();
   }
 
-  // ADMIN or STUDENT view one
   @Get(':id')
-  @Roles('ADMIN', 'STUDENT')
   findOne(@Param('id') id: string) {
-    return this.studentsService.findOne(id);
+    return this.studentService.findOne(id);
   }
 
-  // ADMIN update student
-  @Put(':id')
-  @Roles('ADMIN')
-  update(
-    @Param('id') id: string,
-    @Body() dto: UpdateStudentDto,
-  ) {
-    return this.studentsService.update(id, dto);
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateStudentDto: UpdateStudentDto) {
+    return this.studentService.update(id, updateStudentDto);
   }
 
-  // ADMIN delete student
   @Delete(':id')
-  @Roles('ADMIN')
   remove(@Param('id') id: string) {
-    return this.studentsService.remove(id);
+    return this.studentService.remove(id);
   }
 }

@@ -4,10 +4,16 @@ import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
-import { TeachersController } from './teachers/teachers.controller';
-import { TeachersModule } from './teachers/teachers.module';
-import { StudentsModule } from './students/students.module';
-import { StudentsController } from './students/students.controller';
+import { TeacherController } from './teachers/teachers.controller';
+import { TeacherModule } from './teachers/teachers.module';
+import { StudentModule } from './students/students.module';
+import { StudentController } from './students/students.controller';
+import { ClassController } from './class/class.controller';
+import { ClassService } from './class/class.service';
+import { ClassModule } from './class/class.module';
+import { SubjectController } from './subject/subject.controller';
+import { SubjectService } from './subject/subject.service';
+import { SubjectModule } from './subject/subject.module';
 import { EventsModule } from './events/events.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 
@@ -30,11 +36,13 @@ import { MailerModule } from '@nestjs-modules/mailer';
   },
 }),
    AuthModule,
-   TeachersModule,
-   StudentsModule,
+   TeacherModule,
+   StudentModule,
+   ClassModule,
+   SubjectModule,
    EventsModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, TeacherController, StudentController, ClassController, SubjectController],
   providers: [AppService],
 })
 export class AppModule {}

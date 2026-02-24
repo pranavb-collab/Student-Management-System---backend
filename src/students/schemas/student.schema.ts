@@ -3,18 +3,14 @@ import { Document, Types } from 'mongoose';
 
 @Schema({ timestamps: true })
 export class Student {
-
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
   user!: Types.ObjectId;
 
+  @Prop({ type: Types.ObjectId, ref: 'Class', required: true })
+  class!: Types.ObjectId; // reference to class
+
   @Prop({ required: true, unique: true })
-  rollNumber!: string;
-
-  @Prop({ required: true })
-  grade!: string;
-
-  @Prop({ required: true })
-  section!: string;
+  rollNumber!: string; // auto-generated
 
   @Prop({ required: true })
   dateOfBirth!: Date;
@@ -34,3 +30,4 @@ export class Student {
 
 export type StudentDocument = Student & Document;
 export const StudentSchema = SchemaFactory.createForClass(Student);
+

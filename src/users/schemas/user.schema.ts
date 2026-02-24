@@ -19,3 +19,8 @@ export class User {
 
 export type UserDocument = User & Document
 export const UserSchema=SchemaFactory.createForClass(User)
+
+// {
+//   "email": "admin@school.com",
+//   "password": "obh03Y75"
+// }
