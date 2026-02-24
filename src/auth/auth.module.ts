@@ -37,15 +37,15 @@ import { JwtAuthGuard } from 'src/guards/jwt.guard';
 
   providers: [
     AuthService,
-    RolesGuard,     // ✅ ADD THIS
-    JwtAuthGuard,   // ✅ ADD THIS (if using custom guard)
+    RolesGuard,
+    JwtAuthGuard,
   ],
 
   exports: [
     JwtModule,
     AuthService,
     RolesGuard,
-    JwtAuthGuard,   // ✅ EXPORT IT ALSO
+    JwtAuthGuard,
   ],
 })
 export class AuthModule {}
