@@ -5,9 +5,10 @@ import { SubjectService } from './subject.service';
 export class SubjectController {
   constructor(private readonly subjectService: SubjectService) {}
 
+  // Create a subject with classId
   @Post()
-  create(@Body('name') name: string) {
-    return this.subjectService.create(name);
+  create(@Body('name') name: string, @Body('classId') classId: string) {
+    return this.subjectService.create(name, classId);
   }
 
   @Get()

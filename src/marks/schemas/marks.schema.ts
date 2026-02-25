@@ -11,11 +11,16 @@ export class Marks {
   @Prop({ type: Types.ObjectId, ref: 'Subject', required: true })
   subject!: Types.ObjectId | Subject;
 
-  @Prop({ type: Number, required: true })
+  @Prop({
+    type: Number,
+    required: true,
+    min: 0,
+    max: 100, 
+  })
   marks!: number;
 
   @Prop({ default: false })
-  isPublished!: boolean; // class teacher/admin can publish marks
+  isPublished!: boolean; 
 }
 
 export type MarksDocument = Marks & Document;

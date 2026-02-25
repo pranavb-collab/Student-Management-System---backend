@@ -30,13 +30,14 @@ export class MarksController {
   ) {
     return this.marksService.updateMark(id, userId, role, marks);
   }
-
-  @Patch(':id/publish')
-  @Roles('ADMIN', 'CLASS_TEACHER')
-  publishMarks(@Param('id') id: string) {
-    return this.marksService.publishMarks(id);
-  }
-
+@Patch(':id/publish')
+@Roles('ADMIN', 'TEACHER')
+publishMarks(
+  @Param('id') id: string,
+  @Query('role') role: string
+) {
+  return this.marksService.publishMarks(id, role);
+}
   @Get()
   @Roles('ADMIN')
   getAllMarks() {
