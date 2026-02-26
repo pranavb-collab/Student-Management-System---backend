@@ -15,6 +15,7 @@ import { CreateUserDto } from '../users/dto/createUser.dto';
 import { LoginDto } from './dto/login.dto';
 import { generateRandomPassword } from 'src/helpers/generate-password';
 import * as nodemailer from 'nodemailer';
+import { StudentService } from 'src/students/students.service';
 
 @Injectable()
 export class AuthService {
@@ -24,6 +25,7 @@ export class AuthService {
         @InjectModel(Student.name) private studentModel: Model<StudentDocument>,
         @InjectModel(Class.name) private classModel: Model<ClassDocument>,
         private jwtService: JwtService,
+        private studentService: StudentService,
     ) { }
 
     // ================= REGISTER =================
@@ -85,38 +87,30 @@ export class AuthService {
         }
 
         // STUDENT
-        if (role === 'STUDENT') {
-            const cls = await this.classModel.findById(classId);
-            if (!cls) throw new NotFoundException('Class not found');
+if (role === 'STUDENT') {
 
-            // Generate roll number: grade + section + serial
-            const lastStudent = await this.studentModel
-                .find({ class: classId })
-                .sort({ createdAt: -1 })
-                .limit(1);
+    if (!classId || !dateOfBirth || !parentName || !parentPhone) {
+        throw new BadRequestException('Missing required student fields');
+    }
 
-            let serial = 1;
-            if (lastStudent.length > 0) {
-                const lastRoll = lastStudent[0].rollNumber;
-                serial = parseInt(lastRoll.slice(-3)) + 1;
-            }
+    const cls = await this.classModel.findById(classId);
+    if (!cls) throw new NotFoundException('Class not found');
 
-            const rollNumber = `${cls.grade}${cls.section}${serial.toString().padStart(3, '0')}`;
-
-           const student = await this.studentModel.create({
-                user: user._id,
-                class: classId,
-                rollNumber,
-                dateOfBirth,
-                parentName,
-                parentPhone,
-                address,
-            });
-
-            await this.classModel.findByIdAndUpdate(classId, {
-  $push: { students: student._id },
-});
+    const student = await this.studentService.create(
+        user._id.toString(),
+        {
+            class: classId,
+            dateOfBirth: new Date(dateOfBirth), // ensure Date type
+            parentName,
+            parentPhone,
+            address
         }
+    );
+
+    await this.classModel.findByIdAndUpdate(classId, {
+        $push: { students: student._id },
+    });
+}
 
         // Generate reset token
         const resetToken = this.jwtService.sign({ id: user._id }, { expiresIn: '1d' });

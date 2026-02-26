@@ -7,9 +7,9 @@ export class Student {
   user!: Types.ObjectId;
 
   @Prop({ type: Types.ObjectId, ref: 'Class', required: true })
-  class!: Types.ObjectId; // reference to class
+  class!: Types.ObjectId;
 
-  @Prop({ required: true, unique: true })
+  @Prop({ required: true })
   rollNumber!: string; // auto-generated
 
   @Prop({ required: true })

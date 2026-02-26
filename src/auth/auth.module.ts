@@ -12,10 +12,11 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { JwtAuthGuard } from 'src/guards/jwt.guard';
+import { StudentModule } from 'src/students/students.module';
 
 @Module({
   imports: [
-    ConfigModule,
+    ConfigModule,StudentModule,
 
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
